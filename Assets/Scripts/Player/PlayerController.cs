@@ -8,7 +8,7 @@ public class PlayerController : MonoBehaviour
     private float _speed = 10.0f;
 
     [SerializeField]
-    private float _rotateSpeed = 0.1f;
+    private float _rotateSpeed = 1.0f;
 
     [SerializeField]
     private float _jumpSpeed = 8.0f;
@@ -30,10 +30,10 @@ public class PlayerController : MonoBehaviour
     {
 
     }
-    
+
     void FixedUpdate()
     {
-        if(_characterController.isGrounded)
+        if (_characterController.isGrounded)
         {
             moveDirectrion = new Vector3(0, 0, Input.GetAxis("Vertical"));
             moveDirectrion = transform.TransformDirection(moveDirectrion);
@@ -46,10 +46,6 @@ public class PlayerController : MonoBehaviour
         moveDirectrion.y -= _gravity * Time.deltaTime;
         _characterController.Move(moveDirectrion * Time.deltaTime);
 
-        //transform.Rotate(0, Input.GetAxis("Horizontal"), 0);
-        if (Input.GetAxis("Mouse X") < 0)
-            transform.Rotate(Vector3.up * -_speed);
-        if (Input.GetAxis("Mouse X") > 0)
-            transform.Rotate(Vector3.up * _speed);
+        transform.Rotate(0, Input.GetAxis("Mouse X"), 0);
     }
 }

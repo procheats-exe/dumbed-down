@@ -4,34 +4,41 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
+    private const float Y_ANGLE_MIN = 0.0f;
+    private const float Y_ANGLE_MAX = 60.0f;
+
     [SerializeField]
     private Transform _follow;
 
     [SerializeField]
-    private float speedH = 2.0f;
-    [SerializeField]
-    private float speedV = 2.0f;
-
-    private float _yaw;
-    private float _pitch;
+    private float _offSet = 10.0f;
     
-    // Start is called before the first frame update
+    private Transform _camTransform;
+
+    private float _currentX = 0.0f;
+    private float _currentY = 0.0f;
+    
     void Start()
     {
-        
+        _camTransform = transform;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        _yaw += speedH * Input.GetAxis("Mouse X");
-        _pitch -= speedV * Input.GetAxis("Mouse Y");
+        _currentX += Input.GetAxis("Mouse X");
+        _currentY += Input.GetAxis("Mouse Y");
 
-        //transform.eulerAngles = new Vector3(_pitch, _yaw, 0.0f);
-
-        if (_follow != null)
+        _currentY = Mathf.Clamp(_currentY, Y_ANGLE_MIN, Y_ANGLE_MAX);
+    }
+    
+    void LateUpdate()
+    {
+        if(_follow != null)
         {
-            transform.position = new Vector3(_follow.position.x, 4, _follow.position.z - 10);
+            Vector3 direction = new Vector3(0, 0, -_offSet);
+            Quaternion rotation = Quaternion.Euler(_currentY, _currentX, 0);
+            _camTransform.position = _follow.position + rotation * direction;
+            _camTransform.LookAt(_follow.position);
         }
     }
 }
