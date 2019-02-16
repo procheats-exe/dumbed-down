@@ -43,7 +43,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         ControlMovement();
-        ControlLookAround();
+        //ControlLookAround();
     }
 
     void ControlMovement()
@@ -68,6 +68,7 @@ public class PlayerController : MonoBehaviour
         _lookDirection.y = Mathf.Clamp(_lookDirection.y, -75.0f, 75.0f);
 
         _camera.transform.localRotation = Quaternion.AngleAxis(-_lookDirection.y, Vector3.right);
+        transform.localRotation = Quaternion.AngleAxis(-_lookDirection.y, Vector3.right);
         transform.localRotation = Quaternion.AngleAxis(_lookDirection.x, transform.up);
     }
 }
